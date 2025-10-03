@@ -12,3 +12,5 @@ Pannel Connected to the Closet:
 
 Short overview of button menus:
 <img width="909" height="622" alt="Screenshot 2025-10-01 at 13 01 25" src="https://github.com/user-attachments/assets/a85a48d1-004f-4851-83eb-8c5f741f2a63" />
+
+Based in Svelte with Tailwind CSS
