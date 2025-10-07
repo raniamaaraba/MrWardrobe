@@ -1,0 +1,121 @@
+<script>
+  import { createEventDispatcher } from 'svelte';
+  const dispatch = createEventDispatcher();
+
+  let currentQuestion = 0;
+  let selectedAnswers = {};
+  let showResults = false;
+  let matchedSeason = '';
+
+  const quiz = [
+    { question: 'What is your skin undertone?', options: ['Cool (pink/blue)', 'Warm (yellow/golden)', 'Neutral'], key: 'undertone' },
+    { question: 'What is your natural hair color?', options: ['Light blonde', 'Medium brown', 'Dark black'], key: 'hair' },
+    { question: 'What is your eye color?', options: ['Light blue/green', 'Hazel', 'Dark brown'], key: 'eyes' },
+    { question: 'Do you have high contrast between hair, skin, and eyes?', options: ['Yes', 'No', 'Not sure'], key: 'contrast' }
+  ];
+
+  const seasons = {
+    'Bright Spring': {
+      undertone: 'Warm',
+      contrast: 'Yes',
+      colors: ['Coral', 'Emerald', 'Bright Yellow'],
+      theme: 'bg-pink-100 text-pink-900'
+    },
+    'Soft Summer': {
+      undertone: 'Cool',
+      contrast: 'No',
+      colors: ['Dusty Rose', 'Lavender', 'Steel Blue'],
+      theme: 'bg-blue-100 text-blue-900'
+    },
+    'Deep Winter': {
+      undertone: 'Cool',
+      contrast: 'Yes',
+      colors: ['Crimson', 'Royal Blue', 'Charcoal'],
+      theme: 'bg-gray-100 text-gray-900'
+    },
+    'Warm Autumn': {
+      undertone: 'Warm',
+      contrast: 'No',
+      colors: ['Rust', 'Olive', 'Mustard'],
+      theme: 'bg-orange-100 text-orange-900'
+    }
+  };
+
+  function selectOption(option) {
+    const key = quiz[currentQuestion].key;
+    selectedAnswers[key] = option;
+    if (currentQuestion < quiz.length - 1) {
+      currentQuestion++;
+    } else {
+      matchSeason();
+      showResults = true;
+    }
+  }
+
+  function matchSeason() {
+    const { undertone, contrast } = selectedAnswers;
+    if (undertone === 'Warm' && contrast === 'Yes') matchedSeason = 'Bright Spring';
+    else if (undertone === 'Cool' && contrast === 'No') matchedSeason = 'Soft Summer';
+    else if (undertone === 'Cool' && contrast === 'Yes') matchedSeason = 'Deep Winter';
+    else if (undertone === 'Warm' && contrast === 'No') matchedSeason = 'Warm Autumn';
+    else matchedSeason = 'Neutral Season';
+  }
+</script>
+
+<!-- Leopard Print Background -->
+<div
+  class="fixed inset-0 bg-cover bg-center flex items-center justify-center z-50"
+  style="background-image: url('/leopard.jpg');"
+>
+  <!-- Translucent Quiz Box -->
+  <div class="bg-white/90 backdrop-blur-md rounded-xl shadow-2xl p-6 w-full max-w-md relative animate-fade-in">
+    <!-- Smaller Close Button -->
+    <button
+      on:click={() => dispatch('close')}
+      class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-sm font-bold"
+    >
+      ×
+    </button>
+
+    {#if !showResults}
+      <h2 class="text-xl font-bold mb-4 text-indigo-700">Question {currentQuestion + 1} of {quiz.length}</h2>
+      <p class="mb-6 text-gray-800 font-medium">{quiz[currentQuestion].question}</p>
+      <div class="space-y-3">
+        {#each quiz[currentQuestion].options as option}
+          <button
+            on:click={() => selectOption(option)}
+            class="w-full px-4 py-2 rounded-lg bg-indigo-100 hover:bg-indigo-200 text-indigo-900 font-semibold transition duration-200"
+          >
+            {option}
+          </button>
+        {/each}
+      </div>
+    {:else}
+      <div class={`rounded-lg p-4 ${seasons[matchedSeason]?.theme ?? 'bg-gray-100 text-gray-900'}`}>
+        <h2 class="text-2xl font-bold mb-2">Your Season: {matchedSeason}</h2>
+        <p class="mb-4">Recommended colors for you:</p>
+        <ul class="list-disc pl-5 space-y-1">
+          {#each seasons[matchedSeason]?.colors ?? [] as color}
+            <li class="font-medium">{color}</li>
+          {/each}
+        </ul>
+      </div>
+      <button
+        on:click={() => dispatch('close')}
+        class="mt-6 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition"
+      >
+        Close Quiz
+      </button>
+    {/if}
+  </div>
+</div>
+
+<style>
+  @keyframes fade-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+  }
+</style>
