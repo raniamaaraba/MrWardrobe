@@ -34,14 +34,14 @@
         {#each questions as q, i}
             <div class="border-b pb-2">
                 <div class="flex items-center justify-between cursor-pointer" on:click={() => toggle(i)}>
-                    <span class="text-base font-medium text-gray-800">{q.title}</span>
+                    <span class="text-base font-medium text-white-800">{q.title}</span>
                     <span class="text-xl text-gray-500 transform transition-transform duration-200 {openIndex === i ? 'rotate-180' : ''}">
                     ↓
                     </span>
                 </div>
 
                 {#if openIndex === i}
-                    <div class="mt-2 text-gray-700 text-sm">
+                    <div class="mt-2 text-white-700 text-sm">
                     {q.answer}
                     </div>
                 {/if}
