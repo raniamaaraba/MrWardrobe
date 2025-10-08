@@ -1,3 +1,4 @@
+<!-- https://30somethingurbangirl.com/free-quiz-what-is-your-seasonal-color/-->
 <script>
   import { createEventDispatcher } from 'svelte';
   const dispatch = createEventDispatcher();
@@ -8,11 +9,30 @@
   let matchedSeason = '';
 
   const quiz = [
-    { question: 'What is your skin undertone?', options: ['Cool (pink/blue)', 'Warm (yellow/golden)', 'Neutral'], key: 'undertone' },
-    { question: 'What is your natural hair color?', options: ['Light blonde', 'Medium brown', 'Dark black'], key: 'hair' },
-    { question: 'What is your eye color?', options: ['Light blue/green', 'Hazel', 'Dark brown'], key: 'eyes' },
-    { question: 'Do you have high contrast between hair, skin, and eyes?', options: ['Yes', 'No', 'Not sure'], key: 'contrast' }
+    { question: 'What is your natural hair?', options: ['Light: Golden or White Blonde', 'Warm: Strawberry Blonde, Red, or Reddish Brown', 'Soft: Medium to Deep Ash Blonde', 'Cool: Deep Ash Blonde or Ash Brown', 'Clear: Golden Brown, Red, or Natural brown','Deep: Medium to Deep brown, Black'], key: 'hair' },
+    { question: 'What is your eye colour?', options: ['Light: Blue or Green', 'Warm: Blue-green or Hazel', 'Soft: Greyish-Blue or green, or Soft Hazel','Cool: Greyish-blue, Greyish-brown, or Grey','Clear: Bright Blue, Bright Green, Bright Brown','Deep: Dark brown, Black-brown, or Black'], key: 'eyes' },
+    { question: 'What is your skintone? Please Select which fits the best if all are not true', options: ['Light: Fair/Porcelin, Burn Easily, Does not tan, Rose or Peach undertone', 'Warm: Gold or Ivory, Fair and Beige (typically freckles), Burns Easily, Does not Tan easily, Peachy or Gold undertone ', 'Soft: Netural Beige or Light Brown, Olive Undertones, May have freckles, Tans Easily ','Cool: Porcelin or Beige, Rosey undertones, Burns Gradually','Clear: Milky White or Fair, Rosey Tones, Burns easily','Deep: Bronze or Rich Brown, neutral or blue undertones, Rarely or Never Burns, Tans Fast'], key: 'skintone' },
+    { question: 'What is your best color group?', options: ['Light: Pastels--Baby Pink, Peach, Ash Green, Beige', 'Warm: Beachy--Tan, Coral, Orange, Brown', 'Soft: Salmon, Mauve, Taupe','Cool: Rose Pink, Fuschia, Lavendar, Violet','Clear: Golden Yellow, Bright Red, Hot Pink, Royal Blue','Deep: Mustard, Deep Red, Imperial Purple, Charcoal'], key: 'colors' },
+    { question: 'Which lipstick color do you use most often?', options: ['Light: Peach or Light Pink', 'Warm: Coral or Warm Red', 'Soft: Mauve or Cinnamon','Cool: Rose Pink or Fuschia','Clear: Red or Hot Pink','Deep: Cadminum Red or Burgandy'], key: 'lipstick'}
   ];
+
+    /** key
+     * hair:
+     *  light: 10
+     *  warm: 4-6
+     *  soft: 7-5
+     *  cool: 6-4
+     *  clear: 8-4
+     *  deep: 4-1
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+    */
+
 
   const seasons = {
     'Bright Spring': {
@@ -52,13 +72,16 @@
     }
   }
 
+  //match if user answers at least two of the same
+
   function matchSeason() {
-    const { undertone, contrast } = selectedAnswers;
-    if (undertone === 'Warm' && contrast === 'Yes') matchedSeason = 'Bright Spring';
-    else if (undertone === 'Cool' && contrast === 'No') matchedSeason = 'Soft Summer';
-    else if (undertone === 'Cool' && contrast === 'Yes') matchedSeason = 'Deep Winter';
-    else if (undertone === 'Warm' && contrast === 'No') matchedSeason = 'Warm Autumn';
-    else matchedSeason = 'Neutral Season';
+    const { eyes, hair, lipstick,skintone } = selectedAnswers;
+    if ( eyes === 'Light' &&  hair === 'Light' || eyes === 'Light' && lipstick === 'Light' || eyes === 'Light' && skintone === 'Light' || hair === 'Light' && lipstick === 'Light' || hair === 'Light' && skintone === 'Light' || lipstick === 'Light' && skintone === 'Light') matchedSeason = 'Light Spring';
+    else if ( eyes === 'Warm' &&  hair === 'Warm' || eyes === 'Warm' && lipstick === 'Warm' || eyes === 'Warm' && skintone === 'Warm' || hair === 'Warm' && lipstick === 'Warm' || hair === 'Warm' && skintone === 'Warm' || lipstick === 'Warm' && skintone === 'Warm') matchedSeason = 'Warm Autum';
+    else if ( eyes === 'Soft' &&  hair === 'Soft' || eyes === 'Soft' && lipstick === 'Soft' || eyes === 'Light' && skintone === 'Soft' || hair === 'Soft' && lipstick === 'Soft' || hair === 'Soft' && skintone === 'Soft' || lipstick === 'Soft' && skintone === 'Soft') matchedSeason = 'Soft Summer';
+    else if ( eyes === 'Cool' &&  hair === 'Cool' || eyes === 'Cool' && lipstick === 'Cool' || eyes === 'Cool' && skintone === 'Cool' || hair === 'Cool' && lipstick === 'Cool' || hair === 'Cool' && skintone === 'Cool' || lipstick === 'Cool' && skintone === 'Cool') matchedSeason = 'Cool Summer ';
+    else if ( eyes === 'Clear' &&  hair === 'Clear' || eyes === 'Clear' && lipstick === 'Clear' || eyes === 'Clear' && skintone === 'Clear' || hair === 'Clear' && lipstick === 'Clear' || hair === 'Clear' && skintone === 'Clear' || lipstick === 'Clear' && skintone === 'Clear') matchedSeason = 'Bright Winter';
+    else if ( eyes === 'Deep' &&  hair === 'Deep' || eyes === 'Deep' && lipstick === 'Deep' || eyes === 'Deep' && skintone === 'Deep' || hair === 'Deep' && lipstick === 'Deep' || hair === 'Deep' && skintone === 'Deep' || lipstick === 'Deep' && skintone === 'Deep') matchedSeason = 'Deep Winter';
   }
 </script>
 
