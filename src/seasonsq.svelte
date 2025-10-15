@@ -1,6 +1,7 @@
 <!-- https://30somethingurbangirl.com/free-quiz-what-is-your-seasonal-color/-->
 <script>
   import { createEventDispatcher } from 'svelte';
+  export let userSeason = '';
   const dispatch = createEventDispatcher();
 
   let currentQuestion = 0;
@@ -16,87 +17,97 @@
     { question: 'Which lipstick color do you use most often?', options: ['Light: Peach or Light Pink', 'Warm: Coral or Warm Red', 'Soft: Mauve or Cinnamon','Cool: Rose Pink or Fuschia','Clear: Red or Hot Pink','Deep: Cadminum Red or Burgandy'], key: 'lipstick'}
   ];
 
-    /** key
-     * hair:
-     *  light: 10
-     *  warm: 4-6
-     *  soft: 7-5
-     *  cool: 6-4
-     *  clear: 8-4
-     *  deep: 4-1
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-    */
 
 
   const seasons = {
-    'Bright Spring': {
-      undertone: 'Warm',
-      contrast: 'Yes',
-      colors: ['Coral', 'Emerald', 'Bright Yellow'],
+    'Light Spring': {
+      undertone: 'Warm & Light',
+      colors: ['Denim', 'Soft Olive', 'Honey Yellow', 'Lavendar','Ivory','Soft Red'],
       theme: 'bg-pink-100 text-pink-900'
     },
     'Soft Summer': {
-      undertone: 'Cool',
-      contrast: 'No',
-      colors: ['Dusty Rose', 'Lavender', 'Steel Blue'],
+      undertone: 'Cool & Soft',
+      colors: ['Charcoal', 'Chiffon', 'Blush Pink', 'Soft Navy','Strawberry','Seafoam'],
       theme: 'bg-blue-100 text-blue-900'
     },
     'Deep Winter': {
-      undertone: 'Cool',
-      contrast: 'Yes',
-      colors: ['Crimson', 'Royal Blue', 'Charcoal'],
+      undertone: 'Cool & Dark',
+      colors: ['Black', 'Royal Blue', 'True Red','Sunflower','Amethyst','Jungle Green'],
       theme: 'bg-gray-100 text-gray-900'
     },
     'Warm Autumn': {
-      undertone: 'Warm',
-      contrast: 'No',
-      colors: ['Rust', 'Olive', 'Mustard'],
+      undertone: 'Warm & Soft',
+      colors: ['Crimsion', 'Espresso', 'Butterscotch','Salmon','Basil', 'Tiffany Blue'],
+      theme: 'bg-orange-100 text-orange-900'
+    },
+    'Cool Summer': {
+      undertone: 'Cool & Light',
+      colors: ['Charcoal','Navy','Jelly','Cornflower','American Rose','Asparaghus','Cotton Candy'],
+      theme: 'bg-blue-100 text-yellow-900'
+    },
+    'Bright Winter': {
+      undertone: 'Cool & Bright',
+      colors:  ['Midnight', 'Nude', 'True Red','Lemon','Jade','Grape', 'Blue'],
       theme: 'bg-orange-100 text-orange-900'
     }
+
   };
 
   function selectOption(option) {
     const key = quiz[currentQuestion].key;
-    selectedAnswers[key] = option;
+    const category = option.split(':')[0].trim(); // Extract 'Light', 'Warm', etc.
+    selectedAnswers[key] = category;
+
     if (currentQuestion < quiz.length - 1) {
       currentQuestion++;
     } else {
       matchSeason();
-      showResults = true;
     }
   }
 
-  //match if user answers at least two of the same
-
   function matchSeason() {
-    const { eyes, hair, lipstick,skintone } = selectedAnswers;
-    if ( eyes === 'Light' &&  hair === 'Light' || eyes === 'Light' && lipstick === 'Light' || eyes === 'Light' && skintone === 'Light' || hair === 'Light' && lipstick === 'Light' || hair === 'Light' && skintone === 'Light' || lipstick === 'Light' && skintone === 'Light') matchedSeason = 'Light Spring';
-    else if ( eyes === 'Warm' &&  hair === 'Warm' || eyes === 'Warm' && lipstick === 'Warm' || eyes === 'Warm' && skintone === 'Warm' || hair === 'Warm' && lipstick === 'Warm' || hair === 'Warm' && skintone === 'Warm' || lipstick === 'Warm' && skintone === 'Warm') matchedSeason = 'Warm Autum';
-    else if ( eyes === 'Soft' &&  hair === 'Soft' || eyes === 'Soft' && lipstick === 'Soft' || eyes === 'Light' && skintone === 'Soft' || hair === 'Soft' && lipstick === 'Soft' || hair === 'Soft' && skintone === 'Soft' || lipstick === 'Soft' && skintone === 'Soft') matchedSeason = 'Soft Summer';
-    else if ( eyes === 'Cool' &&  hair === 'Cool' || eyes === 'Cool' && lipstick === 'Cool' || eyes === 'Cool' && skintone === 'Cool' || hair === 'Cool' && lipstick === 'Cool' || hair === 'Cool' && skintone === 'Cool' || lipstick === 'Cool' && skintone === 'Cool') matchedSeason = 'Cool Summer ';
-    else if ( eyes === 'Clear' &&  hair === 'Clear' || eyes === 'Clear' && lipstick === 'Clear' || eyes === 'Clear' && skintone === 'Clear' || hair === 'Clear' && lipstick === 'Clear' || hair === 'Clear' && skintone === 'Clear' || lipstick === 'Clear' && skintone === 'Clear') matchedSeason = 'Bright Winter';
-    else if ( eyes === 'Deep' &&  hair === 'Deep' || eyes === 'Deep' && lipstick === 'Deep' || eyes === 'Deep' && skintone === 'Deep' || hair === 'Deep' && lipstick === 'Deep' || hair === 'Deep' && skintone === 'Deep' || lipstick === 'Deep' && skintone === 'Deep') matchedSeason = 'Deep Winter';
+    const counts = {
+      Light: 0,
+      Warm: 0,
+      Soft: 0,
+      Cool: 0,
+      Clear: 0,
+      Deep: 0
+    };
+
+    Object.values(selectedAnswers).forEach(category => {
+      if (counts[category] !== undefined) {
+        counts[category]++;
+      }
+    });
+
+    const topCategory = Object.entries(counts).reduce((a, b) => (b[1] > a[1] ? b : a))[0];
+
+    const seasonMap = {
+      Light: 'Light Spring',
+      Warm: 'Warm Autumn',
+      Soft: 'Soft Summer',
+      Cool: 'Cool Summer',
+      Clear: 'Bright Winter',
+      Deep: 'Deep Winter'
+    };
+
+    matchedSeason = seasonMap[topCategory] ?? 'Unknown Season';
+
+    showResults = true;
+    dispatch('season', matchedSeason);
+
   }
+
 </script>
 
-<!-- Leopard Print Background -->
+<!--cher bg-->
 <div
   class="fixed inset-0 bg-cover bg-center flex items-center justify-center z-50"
   style="background-image: url('/leopard.jpg');"
 >
-  <!-- Translucent Quiz Box -->
   <div class="bg-white/90 backdrop-blur-md rounded-xl shadow-2xl p-6 w-full max-w-md relative animate-fade-in">
-    <!-- Smaller Close Button -->
-    <button
-      on:click={() => dispatch('close')}
-      class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-sm font-bold"
-    >
+    <button on:click={() => dispatch('close')} class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-sm font-bold">
       ×
     </button>
 
@@ -106,9 +117,7 @@
       <div class="space-y-3">
         {#each quiz[currentQuestion].options as option}
           <button
-            on:click={() => selectOption(option)}
-            class="w-full px-4 py-2 rounded-lg bg-indigo-100 hover:bg-indigo-200 text-indigo-900 font-semibold transition duration-200"
-          >
+            on:click={() => selectOption(option)} class="w-full px-4 py-2 rounded-lg bg-indigo-100 hover:bg-indigo-200 text-indigo-900 font-semibold transition duration-200">
             {option}
           </button>
         {/each}
@@ -123,10 +132,7 @@
           {/each}
         </ul>
       </div>
-      <button
-        on:click={() => dispatch('close')}
-        class="mt-6 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition"
-      >
+      <button on:click={() => dispatch('close')} class="mt-6 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">
         Close Quiz
       </button>
     {/if}

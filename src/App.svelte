@@ -6,8 +6,10 @@
   import Quiz from './seasonsq.svelte';
   //import SeasonSelector from './SeasonSelector.svelte';
 
-  let menuOpen = false;
   let showQuiz = false;
+
+  let userSeason = '';
+  let showSeasonPopup = false;
 
   let currentPage = 'home';
 
@@ -15,23 +17,22 @@
     currentPage = page;
   }
 
-  function toggleMenu() {
-    menuOpen = !menuOpen;
-  }
-
-  function triggerUpload() {
-    document.getElementById('uploadInput')?.click();
-    menuOpen = false;
-  }
-
   function triggerQuiz() {
     showQuiz = true;
-    menuOpen = false;
   }
 
-  function modifySeason() {
-    alert('Modify Season clicked');
-    menuOpen = false;
+  function handleSeason(event) {
+    userSeason = event.detail;
+    showQuiz = false;
+    showSeasonPopup = true;
+  }
+
+  function showSeason() {
+    if (userSeason) {
+      showSeasonPopup = true;
+    } else {
+      alert("Please take the quiz first.");
+    }
   }
 
   let selectedName = 'Meredith';
@@ -44,52 +45,45 @@
     Meredith: '/photos/meredith.png',
     Rania: '/photos/rania.png'
   };
-  
+
 </script>
 
-<!--hamburger -->
-<div class="fixed top-4 left-4 z-50">
-  <button on:click={toggleMenu} class="p-2 bg-gray-800 text-white rounded-full text-xl">
-    {menuOpen ? '×' : '☰'}
+
+<!-- tailwind: https://www.codewithfaraz.com/content/528/create-html-layout-generator-tool-with-tailwind-css-js-->
+
+<!--replace ham  -->
+<div class="fixed top-0 left-0 h-full w-64 bg-gray-900 text-white p-6 space-y-6 shadow-xl z-40">
+  <h2 class="text-2xl font-bold text-indigo-400 mb-6">Mr Wardrobe</h2>
+  <button on:click={() => navigate('getting-started')} class="w-full bg-purple-600 hover:bg-purple-700 py-3 px-4 rounded-lg font-bold transition-transform transform hover:scale-105">
+    Getting Started
+  </button>
+  <button on:click={triggerQuiz} class="w-full bg-purple-600 hover:bg-purple-700 py-3 px-4 rounded-lg font-bold transition-transform transform hover:scale-105">
+    Seasons Quiz
+  </button>
+  <button on:click={() => navigate('settings')} class="w-full bg-purple-600 hover:bg-purple-700 py-3 px-4 rounded-lg font-bold transition-transform transform hover:scale-105">
+    Settings
+  </button>
+  <hr class="border-gray-700 my-4" />
+  <button on:click={() => navigate('upload')} class="w-full bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded text-sm font-medium">
+    Uploads
+  </button>
+  <button on:click={() => showSeasonPopup = true} class="w-full bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded text-sm font-medium">
+    Modify Season
+  </button>
+  <button on:click={() => navigate('app')} class="w-full bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded text-sm font-medium">
+    Home
   </button>
 </div>
 
-<!--dropdown menu-->
-{#if menuOpen}
-  <div class="fixed inset-0 bg-black bg-opacity-90 z-40 flex flex-col items-center justify-center space-y-6 text-white text-2xl">
-    <button on:click={triggerUpload} class="hover:text-indigo-300 transition">Upload PNG</button>
-    <button on:click={triggerQuiz} class="hover:text-indigo-300 transition">Seasonal Quiz</button>
-    <button on:click={modifySeason} class="hover:text-indigo-300 transition">Modify Season</button>
-  </div>
-{/if}
 
-
-
+<!--show the correct sabed season-->
 {#if showQuiz}
-  <Quiz on:close={() => showQuiz = false} />
-{/if}
-
-
-
+  <Quiz on:close={() => showQuiz = false} on:season={(e) => {userSeason = e.detail;}}/>
+  {/if}
 
 
 <main>
-  <h1>
-    Mr Wardrobe
-  </h1>
-
   <!-- button design logic: https://flowbite.com/docs/components/buttons/#gradient-monochrome-->
-
-  <!-- button inside main so no white border-->
-  <button on:click= {() => navigate('settings')} type="button" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-    Settings
-  </button>
-  <button on:click= {() => navigate('upload')} type="button" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-    Uploads
-  </button>
-  <button on:click= {() => navigate('getting-started')} type="button" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-    Getting Started
-  </button>
 
   <!--switch content -->
   {#if currentPage === 'settings'}
@@ -98,7 +92,8 @@
     <Upload />
   {:else if currentPage === 'getting-started'}
     <GettingStarted />
-  {/if}
+  {:else}
+
 
   <div class="max-w-md mx-auto mt-8 space-y-4 text-center">
     <h2 class="text-white text-xl font-bold">
@@ -113,12 +108,23 @@
     alt="Seasonal reference"/>
   </div>
 
+  {/if}
 
-  
-  
+  {#if showSeasonPopup}
+    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+      <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-sm text-center animate-fade-in relative">
+        <button
+          on:click={() => showSeasonPopup = false}
+          class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-sm font-bold"
+        >
+          ×
+        </button>
 
-  
-
+        <h2 class="text-xl font-bold text-indigo-700 mb-2">Your Season</h2>
+        <p class="text-gray-800 font-medium">{userSeason || 'No season selected yet.'}</p>
+      </div>
+    </div>
+  {/if}
 </main>
 
 <style>

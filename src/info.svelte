@@ -25,7 +25,8 @@
   }
 </script>
 
-<main>
+
+<main class="max-w-xl mx-auto mt-8 space-y-4">
     <h1>
         How to Get Started
     </h1>
