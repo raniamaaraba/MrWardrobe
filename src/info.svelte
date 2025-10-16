@@ -1,59 +1,52 @@
+<!-- info.svelte - fully responsive layout -->
 <script>
-  let openIndex = null;
-
-  const questions = [
-    {
-      title: 'What is Mr Wardobe?',
-      answer: "With the help of your input, Mr Wardrobe customises and makes planning outfits easy! Upload an image of yourself, take a quick quiz about your Seasonal Colors, and we will match you with perfect outfits! Don't like our choice? No problem! Use the arrows to switch your selected item and see the probability if the outfit works!"
-    },
-    {
-      title: 'What happens if I get a new piece of clothing?',
-      answer: "No worries! Head over to the 'Upload' tab and add in your new item! Our system will automatically render and add the image to your closet."
-    },
-    {
-      title: 'What if this is not me?',
-      answer: 'In Settings, you can change any of your original settings to Switch Users, Change your Season, and other quality of life improvements.'
-    },
-    {
-      title: "What do you mean by 'Season'?",
-      answer: 'Based on your skin tone, eye color, under-tones, vein color, and many more genetic features, your Season is determined. The Season result then allow us to determine which colors look best on your skin tone and reccomend outfits you will love!'
-    }
-  ];
-
-  function toggle(index) {
-    openIndex = openIndex === index ? null : index;
-  }
+  export let selectedUser = 'Meredith';
+  export let userImage = '/photos/meredith.png';
+  export let userSeason = '';
 </script>
 
+<main class="max-w-6xl mx-auto mt-8 px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
+  <h1 
+    class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-10 leading-tight text-center break-words whitespace-normal">
+    Getting Started with Mr&nbsp;Wardrobe
+  </h1>
 
-<main class="max-w-xl mx-auto mt-8 space-y-4">
-    <h1>
-        How to Get Started
-    </h1>
 
-    <div class="max-w-xl mx-auto mt-8 space-y-4">
-        {#each questions as q, i}
-            <div class="border-b pb-2">
-                <div class="flex items-center justify-between cursor-pointer" on:click={() => toggle(i)}>
-                    <span class="text-base font-medium text-white-800">{q.title}</span>
-                    <span class="text-xl text-gray-500 transform transition-transform duration-200 {openIndex === i ? 'rotate-180' : ''}">
-                    ↓
-                    </span>
-                </div>
+  <!-- Visual user display -->
+  <section class="flex flex-col items-center justify-center mb-16 w-full">
+    <div class="flex flex-col items-center text-center">
+      <img 
+        src={userImage} 
+        alt={selectedUser}
+        class="w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 object-contain rounded-xl shadow-lg mb-6 transition-all duration-300"
+      />
+      <p class="text-white font-bold text-lg sm:text-xl">Current User: {selectedUser}</p>
+      {#if userSeason}
+        <p class="text-indigo-400 mt-2 text-base sm:text-lg">Season: {userSeason}</p>
+      {:else}
+        <p class="text-gray-400 mt-2 text-base sm:text-lg">No season selected - Take the quiz!</p>
+      {/if}
+    </div>
+  </section>
 
-                {#if openIndex === i}
-                    <div class="mt-2 text-white-700 text-sm">
-                    {q.answer}
-                    </div>
-                {/if}
-            </div>
-        {/each}
+  <!-- Quick start guide -->
+  <section class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mb-10 px-4 sm:px-6">
+    <div class="flex flex-col items-center">
+      <div class="text-4xl sm:text-5xl font-bold text-purple-500 mb-2">1</div>
+      <h3 class="font-bold text-white text-xl sm:text-2xl mb-1">Select User</h3>
+      <p class="text-gray-400 text-base sm:text-lg max-w-xs">Choose or add your profile</p>
     </div>
 
-    
+    <div class="flex flex-col items-center">
+      <div class="text-4xl sm:text-5xl font-bold text-purple-500 mb-2">2</div>
+      <h3 class="font-bold text-white text-xl sm:text-2xl mb-1">Take Quiz</h3>
+      <p class="text-gray-400 text-base sm:text-lg max-w-xs">Discover your season colors</p>
+    </div>
+
+    <div class="flex flex-col items-center">
+      <div class="text-4xl sm:text-5xl font-bold text-purple-500 mb-2">3</div>
+      <h3 class="font-bold text-white text-xl sm:text-2xl mb-1">Try Outfits</h3>
+      <p class="text-gray-400 text-base sm:text-lg max-w-xs">Get personalized matches</p>
+    </div>
+  </section>
 </main>
-
-
-
-
-

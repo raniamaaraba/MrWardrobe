@@ -1,17 +1,42 @@
 <script>
   //tailwind css impelemnt - https://codepen.io/resf/pen/abRqevr 
+  import { onMount } from 'svelte';
   import Upload from './user_upload.svelte';
   import GettingStarted from './info.svelte';
   import Settings from './user_settings.svelte';
   import Quiz from './seasonsq.svelte';
+  import OutfitBuilder from './outfit_builder.svelte';
+  import ModifySeason from './modify_season.svelte';
   //import SeasonSelector from './SeasonSelector.svelte';
 
   let showQuiz = false;
-
   let userSeason = '';
   let showSeasonPopup = false;
-
+  let showModifySeason = false;
   let currentPage = 'home';
+
+  // Get users from localStorage or use defaults
+  let users = JSON.parse(localStorage.getItem('users') || '[]');
+  if (users.length === 0) {
+    users = [
+      { name: 'Meredith', image: '/photos/meredith.png' },
+      { name: 'Rania', image: '/photos/rania.png' }
+    ];
+  }
+  
+  let selectedUserIndex = 0;
+  $: selectedName = users[selectedUserIndex]?.name || 'Meredith';
+  $: imageMap = users.reduce((acc, user) => {
+    acc[user.name] = user.image;
+    return acc;
+  }, {});
+  
+  onMount(() => {
+    const savedSeason = localStorage.getItem('userSeason');
+    if (savedSeason) {
+      userSeason = savedSeason;
+    }
+  });
 
   function navigate(page) {
     currentPage = page;
@@ -23,6 +48,7 @@
 
   function handleSeason(event) {
     userSeason = event.detail;
+    localStorage.setItem('userSeason', userSeason);
     showQuiz = false;
     showSeasonPopup = true;
   }
@@ -35,16 +61,14 @@
     }
   }
 
-  let selectedName = 'Meredith';
-
   function toggleName() {
-    selectedName = selectedName === 'Meredith' ? 'Rania' : 'Meredith';
+    selectedUserIndex = (selectedUserIndex + 1) % users.length;
   }
-
-  const imageMap = {
-    Meredith: '/photos/meredith.png',
-    Rania: '/photos/rania.png'
-  };
+  
+  function handleUserAdded(event) {
+    // Reload users when a new one is added
+    users = JSON.parse(localStorage.getItem('users') || '[]');
+  }
 
 </script>
 
@@ -67,47 +91,60 @@
   <button on:click={() => navigate('upload')} class="w-full bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded text-sm font-medium">
     Uploads
   </button>
-  <button on:click={() => showSeasonPopup = true} class="w-full bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded text-sm font-medium">
+  <button on:click={() => showModifySeason = true} class="w-full bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded text-sm font-medium">
     Modify Season
   </button>
-  <button on:click={() => navigate('app')} class="w-full bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded text-sm font-medium">
+  <button on:click={() => navigate('home')} class="w-full bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded text-sm font-medium">
     Home
   </button>
 </div>
 
 
-<!--show the correct sabed season-->
+<!--show the correct saved season-->
 {#if showQuiz}
-  <Quiz on:close={() => showQuiz = false} on:season={(e) => {userSeason = e.detail;}}/>
-  {/if}
+  <Quiz on:close={() => showQuiz = false} on:season={handleSeason}/>
+{/if}
+
+{#if showModifySeason}
+  <ModifySeason 
+    currentSeason={userSeason}
+    on:close={() => showModifySeason = false}
+    on:seasonChanged={(e) => {
+      userSeason = e.detail;
+      showModifySeason = false;
+    }}
+    on:startQuiz={() => {
+      showModifySeason = false;
+      triggerQuiz();
+    }}
+  />
+{/if}
 
 
 <main>
+  <!-- Add user selector at top of main content -->
+  {#if currentPage !== 'settings' && currentPage !== 'upload'}
+    <div class="text-center mb-6">
+      <h2 class="text-white text-xl font-bold mb-2">
+        Active User:
+        <button on:click={toggleName} type="button" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+          {selectedName}
+        </button>
+      </h2>
+    </div>
+  {/if}
+
   <!-- button design logic: https://flowbite.com/docs/components/buttons/#gradient-monochrome-->
 
   <!--switch content -->
   {#if currentPage === 'settings'}
-    <Settings />
+    <Settings on:userAdded={handleUserAdded} />
   {:else if currentPage === 'upload'}
     <Upload />
   {:else if currentPage === 'getting-started'}
-    <GettingStarted />
+    <GettingStarted selectedUser={selectedName} userImage={imageMap[selectedName]} {userSeason} />
   {:else}
-
-
-  <div class="max-w-md mx-auto mt-8 space-y-4 text-center">
-    <h2 class="text-white text-xl font-bold">
-      You Selected:
-      <button on:click={toggleName} type="button" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-        {selectedName}
-      </button>
-    </h2>
-
-  <img
-    src={imageMap[selectedName]}
-    alt="Seasonal reference"/>
-  </div>
-
+    <OutfitBuilder selectedUser={selectedName} {userSeason} />
   {/if}
 
   {#if showSeasonPopup}

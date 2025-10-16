@@ -33,7 +33,75 @@
   let selectedItem = '';
   const items = ['Top', 'Bottom', 'Dress', 'Accesory', 'Shoe'];
   let selectedItem2 = '';
-  const items2 = ['Black', 'Grey', 'White', 'Light Blue', 'Dark Blue','Red','Pink','Light Orange','Dark Orange','Light Yellow','Light Green','Dark Green','Light Purple','Dark Purple'];
+  // Replace the existing items2 array with this comprehensive list
+const items2 = [
+  // Neutrals
+  'Black',
+  'Charcoal',
+  'Grey',
+  'White',
+  'Ivory',
+  'Nude',
+  'Chiffon',
+  'Beige',
+  'Tan',
+  'Espresso',
+  
+  // Blues
+  'Light Blue',
+  'Dark Blue',
+  'Denim',
+  'Soft Navy',
+  'Navy',
+  'Royal Blue',
+  'Cornflower',
+  'Tiffany Blue',
+  'Jelly',
+  'Midnight',
+  'Blue',
+  
+  // Reds & Pinks
+  'Pink',
+  'Blush Pink',
+  'Red',
+  'Soft Red',
+  'True Red',
+  'American Rose',
+  'Strawberry',
+  'Crimson',
+  'Cotton Candy',
+  'Burgundy',
+  
+  // Yellows & Oranges
+  'Light Yellow',
+  'Honey Yellow',
+  'Lemon',
+  'Sunflower',
+  'Light Orange',
+  'Dark Orange',
+  'Butterscotch',
+  'Salmon',
+  'Coral',
+  
+  // Greens
+  'Light Green',
+  'Dark Green',
+  'Soft Olive',
+  'Seafoam',
+  'Basil',
+  'Asparagus',
+  'Jungle Green',
+  'Jade',
+  
+  // Purples
+  'Light Purple',
+  'Dark Purple',
+  'Lavender',
+  'Amethyst',
+  'Grape',
+  'Violet',
+  'Mauve'
+].sort();
   //ROY G BIV
 
   function saveUploadedImages() {
@@ -42,6 +110,39 @@
   }
   //local photos
     const localItems = [
+      { imageData: '/photos/topm.png', source: 'local', itemType: 'Top', colorTag: 'Dark Blue' },
+      { imageData: '/photos/topm1.png', source: 'local', itemType: 'Top', colorTag: 'Dark Purple' },
+      { imageData: '/photos/topm2.png', source: 'local', itemType: 'Top', colorTag: 'Espresso' },
+      { imageData: '/photos/topm3.png', source: 'local', itemType: 'Top', colorTag: 'Dark Blue' },
+      { imageData: '/photos/topm4.png', source: 'local', itemType: 'Top', colorTag: 'Ivory' },
+      { imageData: '/photos/topm5.png', source: 'local', itemType: 'Top', colorTag: 'Ivory' },
+      { imageData: '/photos/topm6.png', source: 'local', itemType: 'Top', colorTag: 'Red' },
+      { imageData: '/photos/topm7.png', source: 'local', itemType: 'Top', colorTag: 'Grey' },
+      { imageData: '/photos/topm8.png', source: 'local', itemType: 'Top', colorTag: 'Yellow' },
+      { imageData: '/photos/topm9.png', source: 'local', itemType: 'Top', colorTag: 'Dark Blue' },
+      { imageData: '/photos/topm10.png', source: 'local', itemType: 'Top', colorTag: 'Grey' },
+      { imageData: '/photos/topm12.png', source: 'local', itemType: 'Top', colorTag: 'Grey' },
+      { imageData: '/photos/topm13.png', source: 'local', itemType: 'Top', colorTag: 'Light Blue' },
+      { imageData: '/photos/topm14.png', source: 'local', itemType: 'Top', colorTag: 'Grey' },
+      { imageData: '/photos/topm15.png', source: 'local', itemType: 'Top', colorTag: 'Grey' },
+      { imageData: '/photos/Bottom1.png', source: 'local', itemType: 'Bottom', colorTag: 'yellow' },
+      { imageData: '/photos/Bottom2.png', source: 'local', itemType: 'Bottom', colorTag: 'black' },
+      { imageData: '/photos/Bottom3.png', source: 'local', itemType: 'Bottom', colorTag: 'grey' },
+
+      { imageData: '/photos/Bottom5.png', source: 'local', itemType: 'Bottom', colorTag: 'black' },
+      { imageData: '/photos/Bottom6.png', source: 'local', itemType: 'Bottom', colorTag: 'dark blue' },
+      { imageData: '/photos/Bottom7.png', source: 'local', itemType: 'Bottom', colorTag: 'back' },
+      { imageData: '/photos/Bottom8.png', source: 'local', itemType: 'Bottom', colorTag: 'black' },
+      { imageData: '/photos/Bottom9.png', source: 'local', itemType: 'Bottom', colorTag: 'Ivory' },
+      { imageData: '/photos/Bottom10.png', source: 'local', itemType: 'Bottom', colorTag: 'green' },
+      { imageData: '/photos/Bottom11.png', source: 'local', itemType: 'Bottom', colorTag: 'nude' },
+      { imageData: '/photos/Bottom12.png', source: 'local', itemType: 'Bottom', colorTag: 'dark green' },
+      { imageData: '/photos/Bottom13.png', source: 'local', itemType: 'Bottom', colorTag: 'light blue' },
+      { imageData: '/photos/Bottom14.png', source: 'local', itemType: 'Bottom', colorTag: 'nude' },
+      { imageData: '/photos/Bottom15.png', source: 'local', itemType: 'Bottom', colorTag: 'light green' },
+
+      
+
       { imageData: '/photos/skirt1.png', source: 'local', itemType: 'Bottom', colorTag: 'Light Blue' },
       { imageData: '/photos/skirt2.png', source: 'local', itemType: 'Bottom', colorTag: 'Light Yellow' },
       { imageData: '/photos/dress1.png', source: 'local', itemType: 'Dress', colorTag: 'Light Blue' },
@@ -91,7 +192,6 @@
   }
 
   function deleteImage() {
-    if (wardrobe[currentIndex].source === 'local') return;
 
     wardrobe.splice(currentIndex, 1);
     saveUploadedImages();
@@ -140,22 +240,23 @@
     <label class="block mb-2 font-medium text-white">Choose Item Type</label>
     <select
       bind:value={selectedItem}
-      class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+      class="w-full px-4 py-2 bg-white text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
       <option value="" disabled selected>Select an Item</option>
       {#each items as item}
-        <option value={item}>{item}</option>
+        <option value={item} class="text-gray-900">{item}</option>
       {/each}
     </select>
+
   </div>
 
   <div class="max-w-sm mx-auto">
     <label class="block mb-2 font-medium text-white">Choose Item Color</label>
     <select
       bind:value={selectedItem2}
-      class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+      class="w-full px-4 py-2 bg-white text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
       <option value="" disabled selected>Select a Color</option>
       {#each items2 as item}
-        <option value={item}>{item}</option>
+        <option value={item} class="text-gray-900">{item}</option>
       {/each}
     </select>
   </div>
@@ -189,11 +290,9 @@
 
     <p class="text-sm text-gray-400">Image {currentIndex + 1} of {wardrobe.length}</p>
 
-    {#if wardrobe[currentIndex].source === 'uploaded'}
-      <button on:click={deleteImage} class="mt-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
-        Delete This Image
-      </button>
-    {/if}
+    <button on:click={deleteImage} class="mt-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+      Delete This Image
+    </button>
   </div>
 {:else}
   <p class="text-center text-gray-400 mt-6">No wardrobe images yet. Upload one to get started!</p>
