@@ -123,7 +123,6 @@
     { imageData: '/photos/Bottom8.png', source: 'local', itemType: 'Bottom', colorTag: 'Black' },
     { imageData: '/photos/Bottom9.png', source: 'local', itemType: 'Bottom', colorTag: 'Black' },
     { imageData: '/photos/Bottom10.png', source: 'local', itemType: 'Bottom', colorTag: 'Ivory' },
-    { imageData: '/photos/Bottom11.png', source: 'local', itemType: 'Bottom', colorTag: 'Green' },
     { imageData: '/photos/Bottom12.png', source: 'local', itemType: 'Bottom', colorTag: 'Nude' },
     { imageData: '/photos/Bottom13.png', source: 'local', itemType: 'Bottom', colorTag: 'black' },
     { imageData: '/photos/Bottom14.png', source: 'local', itemType: 'Bottom', colorTag: 'Light Blue' },
@@ -134,7 +133,7 @@
     { imageData: '/photos/skirt1.png', source: 'local', itemType: 'Bottom', colorTag: 'Light Blue' },
     { imageData: '/photos/skirt2.png', source: 'local', itemType: 'Bottom', colorTag: 'Light Yellow' },
     { imageData: '/photos/dress1.png', source: 'local', itemType: 'Dress', colorTag: 'Light Blue' },
-    { imageData: '/photos/pants.png', source: 'local', itemType: 'Bottom', colorTag: 'Black' },
+
     { imageData: '/photos/sweater1.png', source: 'local', itemType: 'Top', colorTag: 'Pink' }
   ];
   
@@ -238,11 +237,11 @@
 
     {#if tops[currentTopIndex]?.imageData}
     <div class="absolute z-20 flex items-start justify-center" style="
-        top: 155px; 
-        left: 47%; 
+        top: 100px; 
+        left: 53%; 
         transform: translateX(-50%); 
         width: 640px;
-        height: 170px;
+        height: 220px;
         overflow: hidden;
     ">
         <img 
@@ -256,18 +255,18 @@
 
     {#if bottoms[currentBottomIndex]?.imageData}
     <div class="absolute z-20 flex items-start justify-center" style="
-        top: 290px; 
-        left: 47%; 
+        top: 250px; 
+        left: 50%; 
         transform: translateX(-50%); 
-        width: 290px;
-        height: 240px;
+        width: 250px;
+        height: 290px;
         overflow: hidden;
     ">
         <img 
         src={bottoms[currentBottomIndex].imageData} 
         alt="Bottom"
         class="w-full object-contain object-top"
-        style="max-height: 100%;"
+        style="max-height: 150%;"
         />
     </div>
     {/if}
