@@ -1,8 +1,23 @@
+<!-- user_settings.svelte - complete updated version -->
 <script>
+  import { createEventDispatcher } from 'svelte';
+  const dispatch = createEventDispatcher();
+  
   let file;
   let error = '';
   let previewUrl = '';
   let fileInput;
+  let userName = '';
+  let successMessage = '';
+  
+  let users = JSON.parse(localStorage.getItem('users') || '[]');
+  if (users.length === 0) {
+    //add default users if none exist
+    users = [
+      { name: 'Meredith', image: '/photos/meredith.png', isDefault: true },
+      { name: 'Rania', image: '/photos/rania.png', isDefault: true }
+    ];
+  }
 
   function triggerUpload() {
     fileInput.click();
@@ -21,78 +36,136 @@
 
     error = '';
     file = selected;
-    previewUrl = URL.createObjectURL(file);
+    
+    //make preview
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      previewUrl = e.target.result;
+    };
+    reader.readAsDataURL(file);
   }
-
-  let currentSeason = '';
-  const seasons = [
-    { name: 'Spring', color: 'bg-pink-300 hover:bg-pink-400' },
-    { name: 'Summer', color: 'bg-yellow-400 hover:bg-yellow-500' },
-    { name: 'Autumn', color: 'bg-orange-600 hover:bg-orange-700' },
-    { name: 'Winter', color: 'bg-blue-400 hover:bg-blue-500' }
-  ];
+  
+  function saveNewUser() {
+    if (!file || !userName.trim()) {
+      error = 'Please upload an image and enter a name.';
+      return;
+    }
+    
+    //save data info
+    const reader = new FileReader();
+    reader.onload = () => {
+      const newUser = {
+        name: userName.trim(),
+        image: reader.result,
+        isDefault: false
+      };
+      
+      //add new users
+      users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users));
+      
+      //clear
+      file = null;
+      previewUrl = '';
+      userName = '';
+      successMessage = `User "${newUser.name}" added successfully!`;
+      error = '';
+      
+      dispatch('userAdded', newUser.name);
+      
+      //clear msg 3 s
+      setTimeout(() => {
+        successMessage = '';
+      }, 3000);
+    };
+    reader.readAsDataURL(file);
+  }
+  
+  function deleteUser(index) {
+    if (users[index].isDefault) {
+      error = "Can't delete default users.";
+      return;
+    }
+    
+    const deletedName = users[index].name;
+    users.splice(index, 1);
+    localStorage.setItem('users', JSON.stringify(users));
+    successMessage = `User "${deletedName}" deleted.`;
+  }
 </script>
 
-
 <main>
-    <h1>
-        Settings
-    </h1>
+  <h1>Settings</h1>
 
-    
-    <h2>
-        Upload New User:
-    </h2>
-    <!-- stil need to add db to save user upload-->
-    <div class="p-6 max-w-md mx-auto bg-white rounded shadow">
-        <button on:click={triggerUpload} class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-            Upload PNG
-        </button>
+  <h2>Upload New User:</h2>
+  
+  <div>
+    <button on:click={triggerUpload} type="button" class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+      Upload PNG
+    </button>
 
-        <input
-            type="file"
-            accept=".png,image/png"
-            bind:this={fileInput}
-            on:change={handleFileChange}
-            class="hidden"
-        />
+    <input
+      type="file"
+      accept=".png,image/png"
+      bind:this={fileInput}
+      on:change={handleFileChange}
+      class="hidden"
+    />
 
-        {#if error}
-            <p class="mt-2 text-red-600 text-sm">{error}</p>
+    {#if previewUrl}
+      <img src={previewUrl} alt="Preview" class="mt-4 w-32 h-32 object-cover rounded shadow mx-auto" />
+    {/if}
+  </div>
+
+  <p>
+    Enter a name for the user:
+    <input 
+      type="text" 
+      bind:value={userName}
+      class="w-full px-2 py-1 bg-white text-gray-900 border-2 border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+      placeholder="Enter name..."
+    >
+  </p>
+
+  <button 
+    on:click={saveNewUser}
+    type="button" 
+    class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+    Submit
+  </button>
+
+  {#if error}
+    <p class="mt-2 text-red-600 text-sm">{error}</p>
+  {/if}
+  
+  {#if successMessage}
+    <p class="mt-2 text-green-400 text-sm">{successMessage}</p>
+  {/if}
+
+  <h2 class="mt-8">Existing Users:</h2>
+  <div class="space-y-2">
+    {#each users as user, i}
+      <div class="flex items-center justify-between bg-gray-800 p-3 rounded">
+        <span class="text-white">{user.name}</span>
+        {#if !user.isDefault}
+          <button 
+            on:click={() => deleteUser(i)}
+            class="px-3 py-1 bg-red-600 text-white rounded text-sm hover:bg-red-700">
+            Delete
+          </button>
+        {:else}
+          <span class="text-gray-500 text-sm">Default</span>
         {/if}
-
-    </div>
-
-
-    
-
-    <h2>
-        Modify Your Season:
-    </h2>
-
-    <div class="flex flex-wrap justify-center gap-4 mt-8">
-        {#each seasons as season}
-            <button
-            on:click={() => currentSeason = season.name}
-            class={`px-6 py-3 rounded text-white transition
-                ${season.color}
-                ${currentSeason === season.name ? 'ring-4 ring-offset-2 ring-white' : ''}`}
-            >
-            {season.name}
-            </button>
-        {/each}
-        </div>
-
-
-
+      </div>
+    {/each}
+  </div>
 </main>
 
 <style>
-    h1{
-        align-self: center;
-    }
-
-    h2{
-        align-self: self-start;
-    }
+  h1 {
+    align-self: center;
+  }
+  h2 {
+    align-self: self-start;
+  }
 </style>
