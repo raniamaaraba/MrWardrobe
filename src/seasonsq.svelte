@@ -18,6 +18,7 @@
   ];
 
 
+  //used copilot to help set up the wording for this
 
   const seasons = {
     'Light Spring': {
@@ -55,7 +56,7 @@
 
   function selectOption(option) {
     const key = quiz[currentQuestion].key;
-    const category = option.split(':')[0].trim(); // Extract 'Light', 'Warm', etc.
+    const category = option.split(':')[0].trim();
     selectedAnswers[key] = category;
 
     if (currentQuestion < quiz.length - 1) {
