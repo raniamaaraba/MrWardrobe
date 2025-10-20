@@ -7,7 +7,6 @@
   import Quiz from './seasonsq.svelte';
   import OutfitBuilder from './outfit_builder.svelte';
   import ModifySeason from './modify_season.svelte';
-  //import SeasonSelector from './SeasonSelector.svelte';
 
   let showQuiz = false;
   let userSeason = '';
@@ -15,7 +14,7 @@
   let showModifySeason = false;
   let currentPage = 'home';
 
-  // Get users from localStorage or use defaults
+  //pull local storage
   let users = JSON.parse(localStorage.getItem('users') || '[]');
   if (users.length === 0) {
     users = [
@@ -66,7 +65,7 @@
   }
   
   function handleUserAdded(event) {
-    // Reload users when a new one is added
+    //reload for new users
     users = JSON.parse(localStorage.getItem('users') || '[]');
   }
 
@@ -122,7 +121,6 @@
 
 
 <main>
-  <!-- Add user selector at top of main content -->
   {#if currentPage !== 'settings' && currentPage !== 'upload'}
     <div class="text-center mb-6">
       <h2 class="text-white text-xl font-bold mb-2">

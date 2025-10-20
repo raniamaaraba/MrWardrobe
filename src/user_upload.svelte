@@ -33,9 +33,9 @@
   let selectedItem = '';
   const items = ['Top', 'Bottom', 'Dress', 'Accesory', 'Shoe'];
   let selectedItem2 = '';
-  // Replace the existing items2 array with this comprehensive list
+  //replace the existing items2 array with this comprehensive list
 const items2 = [
-  // Neutrals
+  //neutrals
   'Black',
   'Charcoal',
   'Grey',
@@ -47,7 +47,7 @@ const items2 = [
   'Tan',
   'Espresso',
   
-  // Blues
+  //blues
   'Light Blue',
   'Dark Blue',
   'Denim',
@@ -60,7 +60,7 @@ const items2 = [
   'Midnight',
   'Blue',
   
-  // Reds & Pinks
+  //reds and pink
   'Pink',
   'Blush Pink',
   'Red',
@@ -72,7 +72,7 @@ const items2 = [
   'Cotton Candy',
   'Burgundy',
   
-  // Yellows & Oranges
+  //yellow and orange
   'Light Yellow',
   'Honey Yellow',
   'Lemon',
@@ -83,7 +83,7 @@ const items2 = [
   'Salmon',
   'Coral',
   
-  // Greens
+  //greens
   'Light Green',
   'Dark Green',
   'Soft Olive',
@@ -93,7 +93,7 @@ const items2 = [
   'Jungle Green',
   'Jade',
   
-  // Purples
+  //purples
   'Light Purple',
   'Dark Purple',
   'Lavender',

@@ -19,7 +19,7 @@
   
   function selectSeason(season) {
     currentSeason = season;
-    // Save to localStorage for persistence
+    //save to local storage
     localStorage.setItem('userSeason', season);
     dispatch('seasonChanged', season);
     manualSelection = false;

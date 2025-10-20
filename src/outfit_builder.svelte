@@ -5,9 +5,9 @@
   export let selectedUser = 'Meredith';
   export let userSeason = '';
   
-  // Color to season mapping
+  //color to season
   const colorToSeasonMap = {
-    // Neutrals
+    //neutrals
     'Black': ['Deep Winter', 'Bright Winter'],
     'Charcoal': ['Soft Summer', 'Cool Summer', 'Deep Winter'],
     'Grey': ['Soft Summer', 'Cool Summer'],
@@ -19,7 +19,7 @@
     'Tan': ['Warm Autumn'],
     'Espresso': ['Warm Autumn', 'Deep Winter'],
     
-    // Blues
+    //blues
     'Light Blue': ['Light Spring', 'Soft Summer', 'Cool Summer'],
     'Dark Blue': ['Deep Winter', 'Cool Summer'],
     'Denim': ['Light Spring'],
@@ -32,7 +32,7 @@
     'Midnight': ['Bright Winter', 'Deep Winter'],
     'Blue': ['Bright Winter'],
     
-    // Reds & Pinks
+    //reds & pinks
     'Pink': ['Light Spring', 'Soft Summer'],
     'Blush Pink': ['Soft Summer'],
     'Red': ['Deep Winter', 'Bright Winter', 'Warm Autumn'],
@@ -44,7 +44,7 @@
     'Cotton Candy': ['Cool Summer', 'Light Spring'],
     'Burgundy': ['Deep Winter', 'Warm Autumn'],
     
-    // Yellows & Oranges
+    //yellows & oranges
     'Light Yellow': ['Light Spring'],
     'Yellow': ['Light Spring', 'Bright Winter'],
     'Honey Yellow': ['Light Spring'],
@@ -56,7 +56,7 @@
     'Salmon': ['Warm Autumn', 'Soft Summer'],
     'Coral': ['Warm Autumn', 'Light Spring'],
     
-    // Greens
+    //greens
     'Light Green': ['Light Spring', 'Cool Summer'],
     'Dark Green': ['Deep Winter', 'Warm Autumn'],
     'Green': ['Light Spring', 'Cool Summer'],
@@ -67,7 +67,7 @@
     'Jungle Green': ['Deep Winter'],
     'Jade': ['Bright Winter'],
     
-    // Purples
+    //purples
     'Light Purple': ['Soft Summer', 'Cool Summer'],
     'Dark Purple': ['Deep Winter', 'Bright Winter'],
     'Lavender': ['Light Spring'],
@@ -84,7 +84,7 @@
   let currentBottomIndex = 0;
   let matchPercentage = 0;
   
-    // Get users from localStorage to build image map
+    //get users
     let users = JSON.parse(localStorage.getItem('users') || '[]');
     if (users.length === 0) {
     users = [
@@ -232,8 +232,8 @@
       class="absolute inset-0 w-full h-full object-contain z-10"
     />
     
-<!-- Update the image containers in outfit_builder.svelte -->
-    <!-- Replace the existing image overlay sections in outfit_builder.svelte -->
+<!--update the image containers-->
+    <!--replace the existing image overlay-->
 
     {#if tops[currentTopIndex]?.imageData}
     <div class="absolute z-20 flex items-start justify-center" style="

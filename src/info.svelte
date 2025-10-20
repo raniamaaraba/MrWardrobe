@@ -12,7 +12,7 @@
   </h1>
 
 
-  <!-- Visual user display -->
+  <!--user display -->
   <section class="flex flex-col items-center justify-center mb-16 w-full">
     <div class="flex flex-col items-center text-center">
       <img 
@@ -29,7 +29,7 @@
     </div>
   </section>
 
-  <!-- Quick start guide -->
+  <!-- starting guide -->
   <section class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mb-10 px-4 sm:px-6">
     <div class="flex flex-col items-center">
       <div class="text-4xl sm:text-5xl font-bold text-purple-500 mb-2">1</div>

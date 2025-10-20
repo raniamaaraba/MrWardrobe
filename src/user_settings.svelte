@@ -10,10 +10,9 @@
   let userName = '';
   let successMessage = '';
   
-  // Get existing users from localStorage or use defaults
   let users = JSON.parse(localStorage.getItem('users') || '[]');
   if (users.length === 0) {
-    // Add default users if none exist
+    //add default users if none exist
     users = [
       { name: 'Meredith', image: '/photos/meredith.png', isDefault: true },
       { name: 'Rania', image: '/photos/rania.png', isDefault: true }
@@ -38,7 +37,7 @@
     error = '';
     file = selected;
     
-    // Create preview
+    //make preview
     const reader = new FileReader();
     reader.onload = (e) => {
       previewUrl = e.target.result;
@@ -52,7 +51,7 @@
       return;
     }
     
-    // Save the image data and user info
+    //save data info
     const reader = new FileReader();
     reader.onload = () => {
       const newUser = {
@@ -61,23 +60,20 @@
         isDefault: false
       };
       
-      // Add to users array
+      //add new users
       users.push(newUser);
-      
-      // Save to localStorage
       localStorage.setItem('users', JSON.stringify(users));
       
-      // Clear form
+      //clear
       file = null;
       previewUrl = '';
       userName = '';
       successMessage = `User "${newUser.name}" added successfully!`;
       error = '';
       
-      // Notify parent component about new user
       dispatch('userAdded', newUser.name);
       
-      // Clear success message after 3 seconds
+      //clear msg 3 s
       setTimeout(() => {
         successMessage = '';
       }, 3000);
